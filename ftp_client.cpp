@@ -28,6 +28,7 @@ ftp_client::ftp_client(
         password(password) 
 {};
 
+// TODO: Improve!
 String ftp_client::format_bytes(size_t bytes) {
     if (bytes < 1024) {
         return String(bytes) + "B";
