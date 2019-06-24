@@ -41,6 +41,7 @@ String ftp_client::format_bytes(size_t bytes) {
     }
 }
 
+// TODO: Improve!
 ftp_client::connection::connection(const IPAddress& ip, port_t port) {
     tcp_client.connect(ip, port);
 }
