@@ -15,7 +15,6 @@ bool try_for_n_attempts(int n, std::function<bool()> function) {
     return false;
 }
 
-//TODO: replace string with std::string
 ftp_client::ftp_client(
         const IPAddress server_ip, 
         port_t server_port, 
@@ -27,19 +26,6 @@ ftp_client::ftp_client(
         user(user), 
         password(password) 
 {};
-
-// TODO: Improve!
-String ftp_client::format_bytes(size_t bytes) {
-    if (bytes < 1024) {
-        return String(bytes) + "B";
-    } else if (bytes < (1024 * 1024)) {
-        return String(bytes / 1024.0) + "KB";
-    } else if (bytes < (1024 * 1024 * 1024)) {
-        return String(bytes / 1024.0 / 1024.0) + "MB";
-    } else {
-        return String(bytes / 1024.0 / 1024.0 / 1024.0) + "GB";
-    }
-}
 
 // TODO: Improve!
 ftp_client::connection::connection(const IPAddress& ip, port_t port) {

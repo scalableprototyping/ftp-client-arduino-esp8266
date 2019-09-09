@@ -27,7 +27,6 @@ class ftp_client {
         String user;
         String password;
 
-        String format_bytes(size_t bytes);
         std::vector<int> parse_pasv_response(std::string& s) const;
 
         class connection {
@@ -62,3 +61,6 @@ class ftp_client {
                 fs::File file;
         };
 };
+
+String format_bytes(size_t bytes);
+
