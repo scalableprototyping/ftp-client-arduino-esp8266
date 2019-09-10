@@ -15,6 +15,7 @@ bool try_for_n_attempts(int n, std::function<bool()> function) {
     return false;
 }
 
+// TODO: Change to strong types!
 ftp_client::ftp_client(
         const IPAddress server_ip, 
         port_t server_port, 
