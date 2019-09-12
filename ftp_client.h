@@ -9,6 +9,8 @@
 #include <vector>
 
 class ftp_client {
+    // TODO: Add strong types to all arguments 
+
     public:
         using port_t = int;
 
