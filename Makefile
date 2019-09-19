@@ -15,6 +15,6 @@ LIBS := $(ESP_LIBS)/SoftwareSerial/src \
 		$(ESP_LIBS)/EEPROM \
 		$(ESP_LIBS)/GDBStub \
 
-BUILD_EXTRA_FLAGS := -O0 -ggdb -std=c++11
+BUILD_EXTRA_FLAGS := -O3 -ggdb -std=c++11
 
 include $(HOME)/programs/arduino/makeEspArduino/makeEspArduino.mk

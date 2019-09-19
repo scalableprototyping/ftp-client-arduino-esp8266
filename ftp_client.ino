@@ -1,13 +1,26 @@
 #include <Arduino.h>
 
-#include "ftp_client.h"
+#include "ftp_client.hpp"
+#include "ftp_credentials.hpp"
 
+namespace esp8266_arduino { namespace ftp { 
+    client test_client (
+            server_ip{ IPAddress{109, 73, 237, 190} },
+            server_port{ 21 },
+            user{USER},
+            String(PASSWORD)
+        );
+    }
+}
+
+/*
 ftp_client ftp (
     IPAddress(109, 73, 237, 190),
     21,
     String("test@ecobloom.se"),
     String("password123.")
 );
+*/
 
 void setup() {
     // Begin serial communication
@@ -46,7 +59,7 @@ void loop() {
     Serial.println(F("Press enter to upload a test file to FTP server"));
     hold_until_serial_input();
 
-    ftp.upload_file("/test.txt", "/test/test.txt");
+    esp8266_arduino::ftp::test_client.upload_file("/test.txt", "/test/test.txt");
 
     Serial.print(F("Heap: "));
     Serial.println(ESP.getFreeHeap());

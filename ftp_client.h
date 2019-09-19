@@ -1,68 +1,78 @@
+#ifndef FTP_CLIENT_H
+#define FTP_CLIENT_H
 #pragma once
 
 #include <Arduino.h>
-
 #include <ESP8266WiFi.h>
 #include <FS.h>
 
 #include <string>
 #include <vector>
 
-class ftp_client {
-    // TODO: Add strong types to all arguments 
+namespace esp8266_arduino { namespace ftp {
 
-    public:
-        using port_t = int;
+    struct server_ip { IPAddress v; };
+    struct server_port { int v; };
+    struct user { std::string v; };
 
-        ftp_client(
-                const IPAddress server_ip, 
-                port_t server_port, 
-                const String user, 
-                const String password
-                );
+    class client {
+        public:
+            using port_t = int;
+            /*
+               struct password { std::sting; };
+           */
 
-        bool upload_file(const String& path,  const String& fileName) const;
+            client(
+                    const server_ip,
+                    const server_port,
+                    const user, 
+                    const String password
+                  );
 
-    private:
-        IPAddress server_ip;
-        port_t server_port;
-        String user;
-        String password;
+            bool upload_file(const String& path,  const String& fileName) const;
 
-        std::vector<int> parse_pasv_response(std::string& s) const;
+        private:
+            server_ip _server_ip;
+            server_port _server_port;
+            user _user;
+            String password;
 
-        class connection {
-            public:
-                using byte_buffer_t = std::vector<char>;
+            std::vector<int> parse_pasv_response(std::string& s) const;
 
-                struct response {
-                    std::string code = "000";
-                    std::string body;
-                };
+            class connection {
+                public:
+                    using byte_buffer_t = std::vector<char>;
 
-                connection(const IPAddress& ip, port_t port);
-                response receive();
-                bool println(const String& message);
-                bool print(const byte_buffer_t& buffer);
-                bool is_connected();
-                void close();
-                ~connection(); 
+                    struct response {
+                        std::string code = "000";
+                        std::string body;
+                    };
 
-            private:
-                WiFiClient tcp_client;
-        };
+                    connection(const IPAddress& ip, port_t port);
+                    response receive();
+                    bool println(const String& message);
+                    bool print(const byte_buffer_t& buffer);
+                    bool is_connected();
+                    void close();
+                    ~connection(); 
 
-        class file_handler {
-            public:
-                file_handler(const String& path, const char* mode) {
-                    file = SPIFFS.open(path, mode);
-                }
-                ~file_handler() {
-                    file.close();
-                }
-                fs::File file;
-        };
-};
+                private:
+                    WiFiClient tcp_client;
+            };
 
-String format_bytes(size_t bytes);
+            class file_handler {
+                public:
+                    file_handler(const String& path, const char* mode) {
+                        file = SPIFFS.open(path, mode);
+                    }
+                    ~file_handler() {
+                        file.close();
+                    }
+                    fs::File file;
+            };
+    };
 
+    String format_bytes(size_t bytes);
+} }
+
+#endif /* FTP_CLIENT_H */
