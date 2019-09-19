@@ -10,7 +10,7 @@ namespace esp8266_arduino {
                 std::string body;
             };
 
-            connection(const IPAddress& ip, port_t port);
+            connection(const IPAddress& ip, port);
             response receive();
             bool println(const String& message);
             bool print(const byte_buffer_t& buffer);

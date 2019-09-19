@@ -1,4 +1,4 @@
-#include "ftp_client.h"
+#include "ftp_client.hpp"
 
 #include <ESP8266WiFi.h>
 #include <FS.h>
@@ -21,17 +21,16 @@ namespace esp8266_arduino { namespace ftp {
         const server_ip server_ip_,
         const server_port server_port_,
         const user user_,
-        const String password
+        const password password_
         ) :
         _server_ip(server_ip_), 
         _server_port(server_port_), 
         _user(user_), 
-        password(password) 
+        _password(password_) 
     {};
 
-    // TODO: Improve!
-    client::connection::connection(const IPAddress& ip, port_t port) {
-        tcp_client.connect(ip, port);
+    client::connection::connection(const server_ip& server_ip_, const server_port& server_port_) {
+        tcp_client.connect(server_ip_.v, server_port_.v);
     }
 
     bool client::connection::println(const String& message) {
@@ -114,7 +113,7 @@ namespace esp8266_arduino { namespace ftp {
 
         Serial.println(F("Connecting to FTP server..."));
 
-        client::connection command_connection{_server_ip.v, _server_port.v};
+        client::connection command_connection(_server_ip, _server_port);
         if (command_connection.is_connected()) {
             Serial.println(F("FTP connection established!"));
         } else {
@@ -137,7 +136,7 @@ namespace esp8266_arduino { namespace ftp {
             return 0;
         }
 
-        command_connection.println(String("PASS ") + password + "\n");
+        command_connection.println((std::string("PASS ") + _password.v + "\n").c_str());
         response = command_connection.receive();
         if (response.code != "230" ) {
             Serial.println(F("Expected 331 response. Error ocurred"));
@@ -166,7 +165,7 @@ namespace esp8266_arduino { namespace ftp {
         pasv_port_l = pasv.at(5);
         pasv_port = pasv_port_h | pasv_port_l;
 
-        client::connection data_connection(_server_ip.v, pasv_port);
+        client::connection data_connection(_server_ip, server_port{pasv_port});
         if (data_connection.is_connected()) {
             Serial.println(F("Data connection established"));
         }

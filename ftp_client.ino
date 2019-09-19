@@ -6,21 +6,12 @@
 namespace esp8266_arduino { namespace ftp { 
     client test_client (
             server_ip{ IPAddress{109, 73, 237, 190} },
-            server_port{ 21 },
+            server_port{21},
             user{USER},
-            String(PASSWORD)
+            password{PASSWORD}
         );
     }
 }
-
-/*
-ftp_client ftp (
-    IPAddress(109, 73, 237, 190),
-    21,
-    String("test@ecobloom.se"),
-    String("password123.")
-);
-*/
 
 void setup() {
     // Begin serial communication

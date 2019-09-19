@@ -14,19 +14,15 @@ namespace esp8266_arduino { namespace ftp {
     struct server_ip { IPAddress v; };
     struct server_port { int v; };
     struct user { std::string v; };
+    struct password { std::string v; };
 
     class client {
         public:
-            using port_t = int;
-            /*
-               struct password { std::sting; };
-           */
-
             client(
                     const server_ip,
                     const server_port,
                     const user, 
-                    const String password
+                    const password
                   );
 
             bool upload_file(const String& path,  const String& fileName) const;
@@ -35,7 +31,7 @@ namespace esp8266_arduino { namespace ftp {
             server_ip _server_ip;
             server_port _server_port;
             user _user;
-            String password;
+            password _password;
 
             std::vector<int> parse_pasv_response(std::string& s) const;
 
@@ -48,7 +44,7 @@ namespace esp8266_arduino { namespace ftp {
                         std::string body;
                     };
 
-                    connection(const IPAddress& ip, port_t port);
+                    connection(const server_ip&, const server_port&);
                     response receive();
                     bool println(const String& message);
                     bool print(const byte_buffer_t& buffer);
